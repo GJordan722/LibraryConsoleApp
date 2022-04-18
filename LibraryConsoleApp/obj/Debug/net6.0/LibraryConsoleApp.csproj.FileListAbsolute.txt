@@ -1,0 +1,15 @@
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/bin/Debug/net6.0/LibraryConsoleApp
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/bin/Debug/net6.0/LibraryConsoleApp.deps.json
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/bin/Debug/net6.0/LibraryConsoleApp.runtimeconfig.json
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/bin/Debug/net6.0/LibraryConsoleApp.dll
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/bin/Debug/net6.0/LibraryConsoleApp.pdb
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.csproj.AssemblyReference.cache
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.AssemblyInfoInputs.cache
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.AssemblyInfo.cs
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.csproj.CoreCompileInputs.cache
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.dll
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/refint/LibraryConsoleApp.dll
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.pdb
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/LibraryConsoleApp.genruntimeconfig.cache
+/Users/vxce/Projects/LibraryConsoleApp/LibraryConsoleApp/obj/Debug/net6.0/ref/LibraryConsoleApp.dll
