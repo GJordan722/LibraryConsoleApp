@@ -1,0 +1,49 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "LibraryConsoleApp/1.0.0": {
+        "dependencies": {
+          "ClassLib": "1.0.0"
+        },
+        "runtime": {
+          "LibraryConsoleApp.dll": {}
+        }
+      },
+      "ClassLib/1.0.0": {
+        "dependencies": {
+          "LibraryDB": "1.0.0"
+        },
+        "runtime": {
+          "ClassLib.dll": {}
+        }
+      },
+      "LibraryDB/1.0.0": {
+        "runtime": {
+          "LibraryDB.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LibraryConsoleApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ClassLib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LibraryDB/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,15 @@
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.csproj.AssemblyReference.cache
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.AssemblyInfoInputs.cache
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.AssemblyInfo.cs
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.csproj.CoreCompileInputs.cache
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\bin\Debug\net6.0\LibraryDB.exe
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\bin\Debug\net6.0\LibraryDB.deps.json
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\bin\Debug\net6.0\LibraryDB.runtimeconfig.json
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\bin\Debug\net6.0\LibraryDB.dll
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\bin\Debug\net6.0\LibraryDB.pdb
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.dll
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\refint\LibraryDB.dll
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.pdb
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\LibraryDB.genruntimeconfig.cache
+C:\Users\carbo\source\repos\C#\LibraryConsoleApp\LibraryDB\obj\Debug\net6.0\ref\LibraryDB.dll
