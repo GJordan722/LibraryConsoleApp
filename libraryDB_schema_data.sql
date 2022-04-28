@@ -210,7 +210,8 @@ CREATE PROCEDURE [dbo].[userCreate](
 	BEGIN
 		insert into Users(account_id,username,password,role_id)
 			values(@account_id,@username,@password,@role_id)
-END
+		SELECT 'NumberRecordsAffected'=@@ROWCOUNT
+	END
 
 SET ANSI_NULLS ON
 GO
@@ -223,6 +224,7 @@ CREATE PROCEDURE [dbo].[deleteUser](
 	as
 	BEGIN
 		DELETE FROM [dbo].[Users] WHERE [account_id]=@account_id AND [username] = @username AND [password] = @password
+		SELECT 'NumberRecordsAffected'=@@ROWCOUNT
 	END
 
 SET ANSI_NULLS ON
@@ -237,25 +239,26 @@ CREATE PROCEDURE [dbo].[checkUserValid](
 		select * FROM [dbo].[Users] WHERE [username] = @username AND [password] = @password
 	END
 
-	SET ANSI_NULLS ON
+/****** Object:  StoredProcedure [dbo].[updateMedia]    Script Date: 4/27/2022 7:42:49 PM ******/
+SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER OFF
 GO
-CREATE PROCEDURE [dbo].[updateMedia](
+ALTER PROCEDURE [dbo].[updateMedia](
 	@media_name nvarchar(100),
 	@media_type nvarchar(40),
 	@account_id int)
 	as
 	BEGIN
 	DECLARE @account INT SELECT account_id FROM Media WHERE media_name=@media_name AND media_type=@media_type;
-	IF(@account = NULL)
-		UPDATE Media
-		SET account_id = @account_id
-		WHERE media_name=@media_name AND media_type=@media_type
-		ELSE
+	IF(@account != NULL)
 		UPDATE Media
 		SET account_id = NULL
 		WHERE media_name=@media_name AND media_type=@media_type AND account_id =@account_id
+	ELSE
+		UPDATE Media
+		SET account_id = @account_id
+		WHERE media_name=@media_name AND media_type=@media_type
 
 		SELECT 'Number Records Affected' = @@ROWCOUNT
 	END
