@@ -227,16 +227,39 @@ CREATE PROCEDURE [dbo].[deleteUser](
 		SELECT 'NumberRecordsAffected'=@@ROWCOUNT
 	END
 
+
+
+
+/****** Object:  StoredProcedure [dbo].[checkUserValid]    Script Date: 4/30/2022 12:02:39 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER OFF
 GO
 CREATE PROCEDURE [dbo].[checkUserValid](
 	@username nvarchar(30),
-	@password nvarchar(20))
+	@password nvarchar(20) = null)
 	as
 	BEGIN
+	DECLARE @isValid int;
+	IF ((SELECT COUNT(*) FROM Users WHERE EXISTS (SELECT [username] = @username, [password] = @password) ) > 0)
+		Begin
+		SET @isValid = 1; 
+		END
+
+	ELSE
+		BEGIN
+		SET @isValid = 0;
+		END
+	IF(@isValid = 1)
+	BEGIN
 		select * FROM [dbo].[Users] WHERE [username] = @username AND [password] = @password
+	END
+
+	ELSE
+	BEGIN
+		SELECT 'No Account Found' = -1
+	END
+	
 	END
 
 /****** Object:  StoredProcedure [dbo].[updateMedia]    Script Date: 4/27/2022 7:42:49 PM ******/
@@ -244,21 +267,50 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER OFF
 GO
-ALTER PROCEDURE [dbo].[updateMedia](
+CREATE PROCEDURE [dbo].[updateMedia](
 	@media_name nvarchar(100),
 	@media_type nvarchar(40),
 	@account_id int)
 	as
 	BEGIN
-	DECLARE @account INT SELECT account_id FROM Media WHERE media_name=@media_name AND media_type=@media_type;
-	IF(@account != NULL)
-		UPDATE Media
-		SET account_id = NULL
-		WHERE media_name=@media_name AND media_type=@media_type AND account_id =@account_id
-	ELSE
-		UPDATE Media
+	DECLARE @ACCOUNT int
+	SET @ACCOUNT = (SELECT TOP 1 account_id FROM Media M WHERE EXISTS(SELECT media_name = @media_name, media_type = @media_type)) 
+		
+	IF (@ACCOUNT IS NULL)
+		BEGIN
+		UPDATE Media 
 		SET account_id = @account_id
 		WHERE media_name=@media_name AND media_type=@media_type
+		SELECT 'Number Records Affected' = -1
+		END
 
-		SELECT 'Number Records Affected' = @@ROWCOUNT
+		ELSE
+		BEGIN
+		UPDATE Media
+		SET account_id = NULL
+		WHERE media_name=@media_name AND media_type=@media_type AND account_id = @account_id
+		SELECT 'Number Records Affected' = 1
+		END
 	END
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+
+CREATE PROCEDURE [dbo].[viewRoles]
+as
+BEGIN
+	SELECT R.role_id, R.role_name, COUNT(U.role_id) AS 'Total'  FROM Roles R INNER JOIN Users U ON R.role_id = U.role_id GROUP BY R.role_id, R.role_name ;
+END
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+
+CREATE PROCEDURE [dbo].[viewUsers]
+as
+BEGIN
+	SELECT U.username, R.role_name, U.account_id  FROM Users U INNER JOIN Roles R ON R.role_id = U.role_id ;
+END

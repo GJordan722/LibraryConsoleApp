@@ -18,6 +18,9 @@ EXEC	@return_value = [dbo].[checkUserValid] @username=N'gbread223',@password=N'p
 
 GO
 
+
+
+
 USE [LibraryDB]
 GO
 
@@ -34,7 +37,35 @@ GO
 
 DECLARE	@return_value int
 
-EXEC	@return_value = [dbo].[updateMedia] @media_name=N'The Divine Comedy',@media_type=N'Book',@account_id=101
+EXEC	@return_value = [dbo].[checkUserValid] @username=N'gbread223',@password=N'passwordpasses'
 
+
+GO
+
+USE [LibraryDB]
+GO
+
+DECLARE	@return_value int
+
+EXEC	@return_value = [dbo].[updateMedia] @media_name=N'The Divine Comedy',@media_type=N'Book', @account_id = 101
+
+
+GO
+
+USE  [LibraryDB]
+GO
+
+DECLARE @return_value int
+
+EXEC @return_value = [dbo].[viewRoles]
+
+GO
+
+USE  [LibraryDB]
+GO
+
+DECLARE @return_value int
+
+EXEC @return_value = [dbo].[viewUsers]
 
 GO
