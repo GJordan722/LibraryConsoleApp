@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,64 +9,241 @@ namespace LibraryConsoleApp
     public class ClassLib
     {
         LibraryDB DB = new LibraryDB();
-        public string[] PrintUsers()
+
+        public void SelectMedia(string mediaName = "", string mediaType = "")
         {
-            string[] users = new string[DB.Profiles.Count];
-            int count = 0;
-            foreach (string key in DB.Profiles.Keys)
+            DataTable dt = DB.viewMedia();
+
+            if(mediaName != "" && mediaType != "")
             {
-                Console.WriteLine(key);
-                users[count] = key;
-                count++;
+                foreach(DataRow dr in dt.Rows)
+                {
+                   if(dr["media_name"] == mediaName && dr["media_type"] == mediaType)
+                    {
+                        Console.WriteLine($"Media Name: {dr["media_name"]} Media Type: {dr["media_type"]} Media ID: {dr["media_id"]} Author: {dr["author"]} Publisher: {dr["Publisher"]}");
+                    }
+                }
             }
-            return users;
+            else if(mediaType == "")
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    if (dr["media_name"] == mediaName)
+                    {
+                        Console.WriteLine($"Media Name: {dr["media_name"]} Media Type: {dr["media_type"]} Media ID: {dr["media_id"]} Author: {dr["author"]} Publisher: {dr["Publisher"]}");
+                     }
+                }
+            }
+            else if(mediaName == "")
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    if (dr["media_type"] == mediaType)
+                    {
+                        Console.WriteLine($"Media Name: {dr["media_name"]} Media Type: {dr["media_type"]} Media ID: {dr["media_id"]} Author: {dr["author"]} Publisher: {dr["Publisher"]}");
+                     }
+                }
+            }
+        }
+        public void PrintMedia()
+        {
+            DataTable data = DB.viewMedia();
+            Console.WriteLine();
+            Dictionary<string, int> colWidths = new Dictionary<string, int>();
+
+            foreach (DataColumn col in data.Columns)
+            {
+                Console.Write(col.ColumnName);
+                var maxLabelSize = data.Rows.OfType<DataRow>()
+                        .Select(m => (m.Field<object>(col.ColumnName)?.ToString() ?? "").Length)
+                        .OrderByDescending(m => m).FirstOrDefault();
+
+                colWidths.Add(col.ColumnName, maxLabelSize);
+                for (int i = 0; i < maxLabelSize - col.ColumnName.Length + 10; i++) Console.Write(" ");
+            }
+
+            Console.WriteLine();
+
+            foreach (DataRow dataRow in data.Rows)
+            {
+                for (int j = 0; j < dataRow.ItemArray.Length; j++)
+                {
+                        Console.Write(dataRow.ItemArray[j]);
+                    for (int i = 0; i < colWidths[data.Columns[j].ColumnName] - dataRow.ItemArray[j].ToString().Length + 10; i++) Console.Write(" ");
+                }
+                Console.WriteLine();
+            }
+        }
+        public void PrintUsers()
+        {
+            DataTable data = DB.viewUsers();
+            Console.WriteLine();
+            Dictionary<string, int> colWidths = new Dictionary<string, int>();
+
+            foreach (DataColumn col in data.Columns)
+            {
+                Console.Write(col.ColumnName);
+                var maxLabelSize = data.Rows.OfType<DataRow>()
+                        .Select(m => (m.Field<object>(col.ColumnName)?.ToString() ?? "").Length)
+                        .OrderByDescending(m => m).FirstOrDefault();
+
+                colWidths.Add(col.ColumnName, maxLabelSize);
+                for (int i = 0; i < maxLabelSize - col.ColumnName.Length + 10; i++) Console.Write(" ");
+            }
+
+            Console.WriteLine();
+
+            foreach (DataRow dataRow in data.Rows)
+            {
+                for (int j = 0; j < dataRow.ItemArray.Length; j++)
+                {
+                    Console.Write(dataRow.ItemArray[j]);
+                    for (int i = 0; i < colWidths[data.Columns[j].ColumnName] - dataRow.ItemArray[j].ToString().Length + 10; i++) Console.Write(" ");
+                }
+                Console.WriteLine();
+            }
         }
 
-        public Dictionary<string,int> PrintRoles()
+        public void PrintRoles()
         {
-            Dictionary<string, int> roles = new Dictionary<string, int>();
-            foreach (string key in DB.Profiles.Keys)
+            DataTable data = DB.viewRoles();
+            Console.WriteLine();
+            Dictionary<string, int> colWidths = new Dictionary<string, int>();
+
+            foreach (DataColumn col in data.Columns)
             {
-                if (roles.ContainsKey(key))
-                {
-                    roles[key]++;
-                }
-                else
-                {
-                    roles.Add(DB.Profiles[key][1], 1);
-                }
+                Console.Write(col.ColumnName);
+                var maxLabelSize = data.Rows.OfType<DataRow>()
+                        .Select(m => (m.Field<object>(col.ColumnName)?.ToString() ?? "").Length)
+                        .OrderByDescending(m => m).FirstOrDefault();
+
+                colWidths.Add(col.ColumnName, maxLabelSize);
+                for (int i = 0; i < maxLabelSize - col.ColumnName.Length + 10; i++) Console.Write(" ");
             }
-            foreach (string key in roles.Keys)
+
+            Console.WriteLine();
+
+            foreach (DataRow dataRow in data.Rows)
             {
-                Console.WriteLine($"{key}: {roles[key]}");
+                for (int j = 0; j < dataRow.ItemArray.Length; j++)
+                {
+                    Console.Write(dataRow.ItemArray[j]);
+                    for (int i = 0; i < colWidths[data.Columns[j].ColumnName] - dataRow.ItemArray[j].ToString().Length + 10; i++) Console.Write(" ");
+                }
+                Console.WriteLine();
             }
-            return roles;
+
         }
 
-        public string[] PrintProfile(string UserName)
+        public bool SearchProfile(string UserName)
         {
-            string[]? Details = DB.Profile(UserName);
-            if (Details != null)
+            DataTable dt = DB.viewUsers();
+            bool found = false;
+            string username = "";
+            int id = -1;
+            string role = "";
+            foreach (DataRow dr in dt.Rows)
             {
-                if (DB.Active[0] == UserName)
+                for (int i = 0; i < dr.ItemArray.Length; i += 3)
                 {
-                    Console.WriteLine($"{UserName}: {Details[1]}\n{Details[0]}");
+                    string UN = dr[i].ToString();
+                    string ROLE = dr[i + 1].ToString();
+                    int ID = int.Parse(dr[i + 2].ToString());
+                    if (UN == UserName)
+                    {
+                        username = UN;
+                        role = ROLE;
+                        id = ID;
+                        found = true;
+                        break;
+                    }
                 }
-                else
-                {
-                    Console.WriteLine($"{UserName}: {Details[1]}");
-                }
-                return new string[] { UserName, Details[0], Details[1] };
+
+            }
+            return found;
+        }
+
+        public void CheckIO(int media_id, string type)
+        {
+            int accountID = int.Parse(DB.Active[3]);
+            if(DB.updateMedia(media_id,type,accountID) == 1)
+            {
+                Console.WriteLine($"Checked out.");
             }
             else
             {
-                return new string[] {""};
+                Console.WriteLine($"Checked in.");
+            }
+        }
+        public void ChangeRole(string username, string password, int roleid)
+        {
+            DataTable? dt = DB.CheckLogin(username, password);
+            int id = -1;
+            foreach(DataRow dr in dt.Rows)
+            {
+                id = int.Parse(dr[0].ToString());
+            }
+            if (dt != null)
+            {
+                Console.WriteLine("Role Changed");
+                int role_id = DB.updateUser(id, username, roleid);
+            }
+            else
+            {
+                Console.WriteLine($"{username} not found");
+            }
+        }
+
+        public void UserDelete(int id, string username,string password )
+        {
+            if (DB.deleteUser(id, username, password))
+            {
+                Console.WriteLine($"{username} has been deleted!");
+            }
+            else
+            {
+                Console.WriteLine($"{username} not found");
+            }
+        }
+
+        public void PrintProfile(string UserName)
+        {
+            DataTable dt = DB.viewUsers();
+            bool found = false;
+            string username = "";
+            int id = -1;
+            string role = "";
+            foreach(DataRow dr in dt.Rows)
+            {
+                for (int i = 0; i < dr.ItemArray.Length; i += 3)
+                {
+                    string UN = dr[i].ToString();
+                    string ROLE = dr[i + 1].ToString();
+                    int ID = int.Parse(dr[i + 2].ToString());
+                    if (UN == UserName)
+                    {
+                        username = UN;
+                        role = ROLE;
+                        id = ID;
+                        found = true;
+                        break;
+                    }
+                }
+             
+            }
+            if (found)
+            {
+                Console.WriteLine($"{username}#{id} is a(n) {role}");
+            }
+            else
+            {
+                Console.WriteLine($"{UserName} was not found");
             }
         }
 
         public bool CheckLoggedin()
         {
-            if (DB.Active[0] == "")
+            if (DB.Active == null)
             {
                 return true;
             }
@@ -91,19 +268,45 @@ namespace LibraryConsoleApp
 
         public int Login(string UserName = "", string Password = "")
         {
-            if (CheckLoggedin())
+            if (UserName == "" && Password == "")
             {
-                if (DB.Profiles.ContainsKey(UserName) && DB.Profiles[UserName][0] == Password)
+                Console.WriteLine("Logged in as guest");
+                DB.Active = new string[] { "guest", "guest" };
+                return 4;
+            }
+            DataTable dt = DB.CheckLogin(UserName, Password);
+            string username = "";
+            string password = "";
+            string role = "";
+            int role_id = 0;
+            int ID = -1;
+            if (dt != null)
+            {
+                foreach(DataRow row in dt.Rows)
                 {
-                    Console.WriteLine($"Welcome {UserName}");
-                    DB.Active = new string[] { UserName, DB.Profiles[UserName][0], DB.Profiles[UserName][1] };
-                    return 1;
+                    ID = int.Parse(row[0].ToString());
+                    username = row[1].ToString();
+                    password = row[2].ToString();
+                    role_id = int.Parse(row[3].ToString());
+                    role = "";
+                    switch (role_id)
+                    {
+                        case 1:
+                            role = "Admin";
+                            break;
+                        case 2:
+                            role = "Librarian";
+                            break;
+                        case 3:
+                            role = "Patron";
+                            break;
+                    }
                 }
-                else if (UserName == "" && Password == "")
+                if (username == UserName && password == Password)
                 {
-                    Console.WriteLine("Logged in as guest");
-                    DB.Active = new string[] { "guest", "guest" };
-                    return 2;
+                    Console.WriteLine($"Welcome {username} #{ID} {role}\nPassword:{password}");
+                    DB.Active = new string[] { username, password, role, ID.ToString() };
+                    return role_id;
                 }
                 else
                 {
@@ -130,15 +333,21 @@ namespace LibraryConsoleApp
             }
             return DB.Active;
         }
+
+        public void TestCheck(string username, string password)
+        {
+           
+        }
         public void Register()
         {
             Console.WriteLine("Welcome, please enter an username.");
             string user = Console.ReadLine();
+            int role_id = -1;
             bool running = true;
-            string[] account = new string[3];
+            string[] account = new string[4];
             while (running)
             {
-                if (!DB.CheckLogin(user))
+                if (!SearchProfile(user))
                 {
                     Console.WriteLine("Enter a password.");
                     string password = GetHiddenConsoleInput();
@@ -166,7 +375,7 @@ namespace LibraryConsoleApp
                     bool rolecheck = true;
                     while (rolecheck)
                     {
-                        if (role != "G" && role != "P" && role != "L" && role != "A")
+                        if (role != "P" && role != "L" && role != "A")
                         {
                             Console.WriteLine("Incorrect input please enter [P] for patron,[L] for librarian, or [A] for admin");
                             role = Console.ReadLine().ToUpper();
@@ -181,16 +390,24 @@ namespace LibraryConsoleApp
                     {
                         case "P":
                             role = "Patron";
+                            role_id = 3;
                             break;
                         case "L":
                             role = "Librarian";
+                            role_id = 2;
                             break;
                         case "A":
                             role = "Admin";
+                            role_id = 1;
                             break;
                     }
-                    account = new string[] { user, password, role };
-                    DB.Profiles.Add(user, new string[] { password, role });
+                    Random rand = new Random();
+                    int id = rand.Next();
+                    account = new string[] { user, password, role, id.ToString()};
+                    if(!DB.userCreate(id, user, password, role_id))
+                    {
+                        Console.WriteLine("ACCOUNT CREATION ABORTED");
+                    }
                     DB.Active = account;
                     running = false;
                     break;
